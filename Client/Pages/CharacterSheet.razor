@@ -1,0 +1,37 @@
+﻿@page "/charsheet"
+
+<h1>Генератор листа персонажа</h1>
+<p>
+    На этой странице можно создать лист персонажа Аркленс с вашим портретом.
+</p>
+
+<p>
+    Можете выбрать портрет из стандартных для вашей расы и пола:
+    <select onchange="@ChooseDefaultPortrait">
+        @foreach (var portrait in DefaultPortraitUrls)
+        {
+            <option value="@portrait.Value">@portrait.Key</option>
+        }
+    </select>
+</p>
+
+<p>
+    Либо загрузите свой портрет
+    <InputFile OnChange="@HandleFile" accept="image/*">Загрузите портрет</InputFile><br/>
+</p>
+
+<p>
+    Эта кнопка очищает портрет <button onclick="@DropImage">🗑️</button>
+</p>
+
+<p>
+    <InputText @bind-Value="@_fileName"/> Можете написать здесь названия для файла
+</p>
+
+<InputCheckbox @bind-Value="_includeFront" disabled="@(!_includeBack)"/> Загрузить переднюю часть
+<InputCheckbox @bind-Value="_includeBack" disabled="@(!_includeFront)"/> Загрузить заднюю часть
+
+<div class="portrait-container">
+    <div style="background-image: url(@GetPortraitData())" class="portrait"></div>
+</div><br/>
+<button onclick="@DownloadFile">💾</button>
